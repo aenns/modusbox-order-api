@@ -1,6 +1,10 @@
 #%RAML 1.0
 title: ModusBox Order API
-
+version: 1.0
+baseUri: https://mocksvc.mulesoft.com/mocks/e7771378-1a59-4fed-8de3-002468579deb 
+types: 
+  responsePart: !include types/orders-response.raml
+  
 /order:
   /{orderId}:
     get:
@@ -8,3 +12,5 @@ title: ModusBox Order API
         200:
           body:
             application/json:
+              type: responsePart
+              example: !include ../examples/example-output.json
