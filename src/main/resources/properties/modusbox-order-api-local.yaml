@@ -1,0 +1,13 @@
+http:
+  port: "8081"
+  host: "0.0.0.0"
+  url: "/api/orders/v1/*"
+
+logging:
+  category: "com.modusbox.esb"
+  
+db:
+  driverClassName: "org.h2.Driver"
+  url: "jdbc:h2:mem:OrdersDB;DATABASE_TO_UPPER=false;INIT=RUNSCRIPT FROM 'classpath:sql/tables.sql';MODE=MySql"
+  username: ""
+  password: ""

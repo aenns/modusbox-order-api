@@ -26,6 +26,9 @@
 		<!-- Mule logger -->        
         <AsyncLogger name="org.mule.runtime.core.internal.processor.LoggerMessageProcessor" level="INFO"/>
  
+		<!-- ModusBox logger -->
+		<AsyncLogger name="com.modusbox.esb" level="INFO"/> 
+ 
         <AsyncRoot level="INFO">
             <AppenderRef ref="file" />
         </AsyncRoot>

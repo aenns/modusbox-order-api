@@ -1,2 +1,10 @@
 #%RAML 1.0
-title: Sample API
+title: ModusBox Order API
+
+/order:
+  /{orderId}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
