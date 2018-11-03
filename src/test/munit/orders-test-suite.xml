@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="orders-test-suite.xml" />
+	<munit:test name="testWithResults" description="Test" doc:id="d6771c1c-a04c-4298-afe7-a9472c6aa75c" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="151b5d37-e68b-4d0b-9baa-ad5f6db270fb" >
+				<munit:variables >
+					<munit:variable key="orderId" value="1" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to ordersImplMain" doc:id="549c258b-9458-4d6a-bd10-6daa14b90bc9" name="ordersImplMain"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="abec1a12-8f2f-4a8b-af89-dfac8df38ddf" is="#[MunitTools::notNullValue()]" expression="#[payload]" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="testWithNoResults" description="Test" doc:id="d6771c1c-a04c-4298-afe7-a9472c6aa75c" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="151b5d37-e68b-4d0b-9baa-ad5f6db270fb" >
+				<munit:variables >
+					<munit:variable key="orderId" value="5" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to ordersImplMain" doc:id="549c258b-9458-4d6a-bd10-6daa14b90bc9" name="ordersImplMain"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="abec1a12-8f2f-4a8b-af89-dfac8df38ddf" is="#[MunitTools::nullValue()]" expression="#[payload]" />
+		</munit:validation>
+	</munit:test>
+</mule>
