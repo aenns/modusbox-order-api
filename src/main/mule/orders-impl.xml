@@ -22,7 +22,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 	</sub-flow>
 	<sub-flow name="queryItemsTable">
 		<db:select target="itemsResult" doc:name="Select" doc:id="05b70eed-728b-4db4-b3cb-78d42db4b8ea" config-ref="Database_Config">
-			<db:sql>select ITEMS.ItemID, ITEMS.ItemName, ITEMS.ItemCost from OrdersDb.Items ITEMS, OrdersDb.OrderItems ORDITEMS where ORDITEMS.OrderID = :orderId and ORDITEMS.ItemID = ITEMS.ItemID</db:sql>
+			<db:sql>select ITEMS.ItemID, ITEMS.ItemName, ITEMS.ItemCost, ORDITEMS.OrderItemID from OrdersDb.Items ITEMS, OrdersDb.OrderItems ORDITEMS where ORDITEMS.OrderID = :orderId and ORDITEMS.ItemID = ITEMS.ItemID</db:sql>
 			<db:input-parameters><![CDATA[
       			#[{'orderId' : vars.orderId}]
     			]]></db:input-parameters>

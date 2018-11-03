@@ -39,8 +39,8 @@ INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (3
 INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (4,2,2,2);
 INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (5,2,4,2);
 
-INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (7,3,1,5);
-INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (8,3,2,5);
-INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (9,3,3,5);
-INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (10,3,4,5);
-INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (11,3,5,5);
+INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (6,3,1,5);
+INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (7,3,2,5);
+INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (8,3,3,5);
+INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (9,3,4,5);
+INSERT INTO OrdersDb.OrderItems (OrderItemID,OrderID,ItemID,ItemCount) values (10,3,5,5);
