@@ -31,51 +31,6 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
             </ee:variables>
         </ee:transform>
         <logger category="${logging.category}" level="INFO" message="get:\order\(orderId):orders-api-config. #['orderId = ' ++ vars.orderId]" />
-		
-		<flow-ref name="queryOrderTable" target="orderQueryResult"/>
-		
-		<choice>
-			<when expression="#[sizeOf(vars.orderQueryResult) &gt; 0]">
-				<flow-ref name="queryItemsTable"/>	
-				<flow-ref name="displayQueryResults"/>		
-			</when>	
-			<otherwise>
-				<flow-ref name="indicateNoResult"/>
-			</otherwise>	
-		</choice>	
+		<flow-ref doc:name="Flow Reference" doc:id="1bb44561-d1f8-4d9a-8a96-b511be14a0bc" name="ordersImplMain"/>
 	</flow>
-	<sub-flow name="queryItemsTable">
-		<db:select target="itemsResult" doc:name="Select" doc:id="05b70eed-728b-4db4-b3cb-78d42db4b8ea" config-ref="Database_Config">
-			<db:sql>select ITEMS.ItemID, ITEMS.ItemName, ITEMS.ItemCost from OrdersDb.Items ITEMS, OrdersDb.OrderItems ORDITEMS where ORDITEMS.OrderID = :orderId and ORDITEMS.ItemID = ITEMS.ItemID</db:sql>
-			<db:input-parameters><![CDATA[
-      			#[{'orderId' : vars.orderId}]
-    			]]></db:input-parameters>
-		</db:select>
-	</sub-flow>
-	<sub-flow name="indicateNoResult">
-		<set-variable variableName="httpStatus" value="204" />
-	</sub-flow>
-    <sub-flow name="queryOrderTable">
-    		<db:select doc:name="Select" doc:id="05b70eed-728b-4db4-b3cb-78d42db4b8ea" config-ref="Database_Config">
-			<db:sql>select ORD.OrderID, ORD.CustomerName, ORD.PlacementDate from OrdersDb.Orders ORD where ORD.OrderID = :orderId</db:sql>
-			<db:input-parameters><![CDATA[
-      			#[{'orderId' : vars.orderId}]
-    			]]></db:input-parameters>
-		</db:select>
-    </sub-flow>
-    <sub-flow name="displayQueryResults">
-    		<ee:transform doc:name="Transform Message" doc:id="095465a9-92bd-4946-8900-8d795619051f" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-{
-	OrderID: vars.orderQueryResult[0].OrderID,
-	CustomerName: vars.orderQueryResult[0].CustomerName,
-	PlacementDate: vars.orderQueryResult[0].PlacementDate,
-	Items: vars.itemsResult
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-    </sub-flow>
 </mule>
