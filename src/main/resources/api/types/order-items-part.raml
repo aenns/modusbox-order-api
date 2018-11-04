@@ -1,0 +1,31 @@
+#%RAML 1.0 DataType
+type: object
+properties: 
+  ItemCount:
+    description: The number of items
+    required: true
+    type: number
+  OrderItemCost: 
+    description: The order item cost
+    required: true
+    type: number
+  OrderItemID: 
+    description: The order item id
+    required: true
+    type: number
+  OrderItem:
+    type: object
+    properties:
+      ItemCost:
+        description: The item cost
+        required: true
+        type: number
+      ItemName:
+        description: The item name
+        required: true
+        type: string
+      ItemID:
+        description: The item id
+        required: true
+        type: number
+    

@@ -1,32 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
-	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
+<mule xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd 
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd 
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
 	<sub-flow name="ordersImplMain" doc:id="078a0560-b61c-47d2-937a-38fe4be54614">
 		<logger level="INFO" category="${logging.category}" message="Got into impl flow"/>
 		<flow-ref name="queryOrderTable" target="orderQueryResult"/>
 		<choice>
 			<when expression="#[sizeOf(vars.orderQueryResult) &gt; 0]">
-				<flow-ref name="queryItemsTable"/>	
+				<flow-ref name="queryOrderItemsTable"/>	
+				
+				<set-variable value="#[[]]" variableName="orderItemsHolder"/>
+				
+				<foreach collection="#[vars.orderItemsResult]">	
+					<scripting:execute target="dummy" engine="groovy" doc:name="Execute" doc:id="4b2c729d-6aa7-419c-bb52-c66867fc9055">
+						<scripting:code>
+						<![CDATA[
+						import java.util.HashMap;
+						import java.math.BigDecimal;
+						import java.math.RoundingMode;
+						
+						HashMap item = new HashMap();
+						item.put('ItemID',payload.ItemID);
+						item.put('ItemName',payload.ItemName);
+						item.put('ItemCost',payload.ItemCost);
+						HashMap orderItem = new HashMap();
+						orderItem.put('OrderItemID',payload.OrderItemID);
+						orderItem.put('ItemCount',payload.ItemCount);
+						BigDecimal a = new BigDecimal(payload.ItemCost).multiply(new BigDecimal(payload.ItemCount));
+    						BigDecimal orderItemCost = a.setScale(2, BigDecimal.ROUND_HALF_UP);
+						orderItem.put('OrderItemCost',orderItemCost);
+						orderItem.put('OrderItem',item);
+						vars.orderItemsHolder.add(orderItem);
+						]]>
+						</scripting:code>
+					</scripting:execute>
+				</foreach>
+				
 				<flow-ref name="displayQueryResults"/>		
 			</when>	
 			<otherwise>
 				<flow-ref name="indicateNoResult"/>
 			</otherwise>	
 		</choice>	
-	</sub-flow>
-	<sub-flow name="queryItemsTable">
-		<db:select target="itemsResult" doc:name="Select" doc:id="05b70eed-728b-4db4-b3cb-78d42db4b8ea" config-ref="Database_Config">
-			<db:sql>select ITEMS.ItemID, ITEMS.ItemName, ITEMS.ItemCost, ORDITEMS.OrderItemID from OrdersDb.Items ITEMS, OrdersDb.OrderItems ORDITEMS where ORDITEMS.OrderID = :orderId and ORDITEMS.ItemID = ITEMS.ItemID</db:sql>
-			<db:input-parameters><![CDATA[
-      			#[{'orderId' : vars.orderId}]
-    			]]></db:input-parameters>
-		</db:select>
 	</sub-flow>
 	<sub-flow name="indicateNoResult">
 		<logger level="INFO" category="${logging.category}" message="No results found for orderId: #[vars.orderId]"/>
@@ -35,6 +56,14 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
     <sub-flow name="queryOrderTable">
     		<db:select doc:name="Select" doc:id="05b70eed-728b-4db4-b3cb-78d42db4b8ea" config-ref="Database_Config">
 			<db:sql>select ORD.OrderID, ORD.CustomerName, ORD.PlacementDate from OrdersDb.Orders ORD where ORD.OrderID = :orderId</db:sql>
+			<db:input-parameters><![CDATA[
+      			#[{'orderId' : vars.orderId}]
+    			]]></db:input-parameters>
+		</db:select>
+    </sub-flow>
+    <sub-flow name="queryOrderItemsTable">
+    		<db:select target="orderItemsResult" doc:name="Select" doc:id="05b70eed-728b-4db4-b3cb-78d42db4b8ea" config-ref="Database_Config">
+			<db:sql>select ORDITEMS.OrderItemID, ORDITEMS.OrderID, ORDITEMS.ItemID, ORDITEMS.ItemCount, ITEMS.ItemName, ITEMS.ItemCost from OrdersDb.OrderItems ORDITEMS, OrdersDb.Items ITEMS where ORDITEMS.OrderID = :orderId and ORDITEMS.ItemID = ITEMS.ItemID</db:sql>
 			<db:input-parameters><![CDATA[
       			#[{'orderId' : vars.orderId}]
     			]]></db:input-parameters>

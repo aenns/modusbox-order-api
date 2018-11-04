@@ -1,32 +1,38 @@
 {
-    "OrderID": 3,
-    "CustomerName": "Real Important Client",
-    "PlacementDate": "2018-11-03T16:48:52",
-    "Items": [
+    "OrderID": 1,
+    "CustomerName": "ModusBox",
+    "PlacementDate": "2018-11-03T22:34:57",
+    "TotalOrderCost": 449.91,
+    "OrderItems": [
         {
-            "ItemName": "Item 1 Name",
-            "ItemCost": 29.99,
-            "ItemID": 1
+            "OrderItem": {
+                "ItemCost": 29.99,
+                "ItemName": "Item 1 Name",
+                "ItemID": 1
+            },
+            "ItemCount": 3,
+            "OrderItemCost": 89.97,
+            "OrderItemID": 1
         },
         {
-            "ItemName": "Item 2 Name",
-            "ItemCost": 39.99,
-            "ItemID": 2
+            "OrderItem": {
+                "ItemCost": 49.99,
+                "ItemName": "Item 3 Name",
+                "ItemID": 3
+            },
+            "ItemCount": 3,
+            "OrderItemCost": 149.97,
+            "OrderItemID": 2
         },
         {
-            "ItemName": "Item 3 Name",
-            "ItemCost": 49.99,
-            "ItemID": 3
-        },
-        {
-            "ItemName": "Item 4 Name",
-            "ItemCost": 59.99,
-            "ItemID": 4
-        },
-        {
-            "ItemName": "Item 5 Name",
-            "ItemCost": 69.99,
-            "ItemID": 5
+            "OrderItem": {
+                "ItemCost": 69.99,
+                "ItemName": "Item 5 Name",
+                "ItemID": 5
+            },
+            "ItemCount": 3,
+            "OrderItemCost": 209.97,
+            "OrderItemID": 3
         }
     ]
 }
