@@ -13,6 +13,10 @@ properties:
     description: The order date
     required: true
     type: string
+  TotalOrderCost:
+    description: The total order cost
+    required: true
+    type: number
   OrderItems:
     type: array
     items: !include order-items-part.raml
